@@ -31,7 +31,17 @@ def mock_set_relay(zone, on):
 def mock_set_relay_none(zone, on):
     return None
 
+class MockDigitalOutputDevice:
+    value = 1
+    def __init__(self, pin, active_high, initial_value) -> None:
+        pass
+    def on(self):
+        return 1
+    def off(self):
+        return 0
+
 def test_zone_set_status(client, monkeypatch):
+    monkeypatch.setattr('sprinkler.views.DigitalOutputDevice', MockDigitalOutputDevice)
     monkeypatch.setattr('sprinkler.control.set_relay', mock_set_relay)
     res = client.get('/api/zone/1/on')
     assert res.status_code == 200
