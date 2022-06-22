@@ -6,6 +6,18 @@ from sprinkler.app import create_app
 def flask_app():
     """flask app fixture"""
     _app = create_app()
+    _app.config['ZONES'] = [
+            {
+                'id': '1',
+                'name': 'test zone 1',
+                'pin': 10
+            },
+            {
+                'id': '2',
+                'name': 'test zone 2',
+                'pin': 15
+            }
+        ]
     return _app
 
 @pytest.fixture
