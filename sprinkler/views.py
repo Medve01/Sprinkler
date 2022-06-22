@@ -35,6 +35,8 @@ def set_zone(zone_id, onoff):
         on = False # pylint:disable=invalid-name
     else:
         return jsonify({'Error':'Invalid parameter'}), 400
+    with current_app.app_context():
+        current_app.logger.info('Turning on zone_id' + zone_id)
     status = control.set_relay(zone_id, on)
     if status is None:
         return jsonify({'Error': 'Invalid zone id'}), 404

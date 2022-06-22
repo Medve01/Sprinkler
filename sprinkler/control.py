@@ -36,6 +36,7 @@ def set_relay(zone_id, on): #pylint:disable=invalid-name
     for zone in zones:
         if zone['id'] == zone_id:
             output = DigitalOutputDevice(zone['pin'], active_high=True, initial_value=None)
+            current_app.logger.info('Switching zone ' + zone['name'] + ' ' + str(on))
             if on:
                 output.on()
             else:
