@@ -1,0 +1,14 @@
+[Unit]
+Description=Lexie Sprinkler
+After=network.target
+
+[Service]
+User=pi
+Group=pi
+WorkingDirectory=/opt/Sprinkler
+Environment="PATH=/opt/Sprinkler/venv/bin"
+ExecStart=/bin/bash -c 'source /opt/Sprinkler/venv/bin/activate; gunicorn -w 1 --bind unix:/tmp/sprinkler/ipc.sock wsgi:app'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
