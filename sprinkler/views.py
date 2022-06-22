@@ -25,3 +25,17 @@ def get_zone(zone_id):
     if status is None:
         return jsonify({'Error': 'Invalid zone id'}), 404
     return jsonify(status)
+
+@api.route('/zone/<zone_id>/<onoff>', methods=['GET'])
+def set_zone(zone_id, onoff):
+    """ Turns a zone on/off """
+    if onoff == 'on':
+        on = True # pylint:disable=invalid-name
+    elif onoff == 'off':
+        on = False # pylint:disable=invalid-name
+    else:
+        return jsonify({'Error':'Invalid parameter'}), 400
+    status = control.set_relay(zone_id, on)
+    if status is None:
+        return jsonify({'Error': 'Invalid zone id'}), 404
+    return jsonify(status)
