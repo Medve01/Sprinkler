@@ -1,6 +1,5 @@
 """Relay control through GPIO"""
 import time
-from os.path import exists
 
 from flask import current_app
 
@@ -16,9 +15,8 @@ def initialize_relay_gpio(zone_pin):
     Args:
         zone_id (_type_): zone id
     """
-    if not exists(gpiopath(zone_pin)):
-        with open(GPIO_BASE_PATH + '/export', 'w', encoding='UTF-8') as gpio_export:
-            gpio_export.write(str(zone_pin))
+    with open(GPIO_BASE_PATH + '/export', 'w', encoding='UTF-8') as gpio_export:
+        gpio_export.write(str(zone_pin))
     directionpath = gpiopath(zone_pin).replace('value', 'direction')
     with open(directionpath, 'w', encoding='UTF-8') as gpio_direction:
         gpio_direction.write('out')
