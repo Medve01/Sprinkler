@@ -22,7 +22,7 @@ def test_control_initialize_relay_gpio_already_exported(monkeypatch, flask_app):
     with open(fake_gpio_base + '/gpio10/value', 'w'):
         pass
     with flask_app.app_context():
-        initialize_relay_gpio('1')
+        initialize_relay_gpio('10')
     # with open(fake_gpio_base + '/export', 'r') as f:
     #     content = f.read()
     #     assert content == '10'
@@ -40,7 +40,7 @@ def test_control_initialize_relay_gpio_not_exported(monkeypatch, flask_app):
         pass
     with flask_app.app_context():
         with pytest.raises(FileNotFoundError):
-            initialize_relay_gpio('1')
+            initialize_relay_gpio('10')
     with open(fake_gpio_base + '/export', 'r') as f:
         content = f.read()
         assert content == '10'
