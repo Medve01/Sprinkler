@@ -1,6 +1,5 @@
 """Blueprints for UI and API"""
 from flask import Blueprint, current_app, jsonify, render_template
-from gpiozero import DigitalOutputDevice
 
 from sprinkler import control
 
@@ -39,16 +38,7 @@ def set_zone(zone_id, onoff):
     with current_app.app_context():
         current_app.logger.info('Turning on zone_id' + zone_id)
     # status = control.set_relay(zone_id, on)
-    status = None
-    for zone in current_app.config['ZONES']:
-        if zone['id'] == zone_id:
-            output = DigitalOutputDevice(zone['pin'], active_high=True, initial_value=None)
-            if on:
-                output.on()
-            else:
-                output.off()
-            status = zone
-            status['on'] = on
+    status = control.set_relay(zone_id, on)
     if status is None:
         return jsonify({'Error': 'Invalid zone id'}), 404
     return jsonify(status)
