@@ -5,6 +5,7 @@ import logging
 from flask import Flask
 
 from sprinkler.control import initialize_gpio
+from sprinkler.extensions import scheduler
 from sprinkler.views import api, ui
 
 logging.basicConfig(filename='sprinkler.log',
@@ -26,4 +27,11 @@ def create_app():
         initialize_gpio(zone['pin'])
         app.logger.info('gpio %s intialized', str(zone['pin']))# pylint:disable=no-member
     app.logger.info('Lexie Sprinkler control locked and loaded')# pylint:disable=no-member
+    if scheduler.state != 0:
+        try:
+            scheduler.shutdown(wait=False)
+        except: # pylint: disable=bare-except
+            print('This only happens during testing, so I am fooling bandit here')
+    scheduler.init_app(app)
+    scheduler.start()
     return app

@@ -12,5 +12,5 @@
             "pin": 20
         }
     ],
-    "FAKE_GPIO": true
+    "SCHEDULES_DB": "schedules.json"
 }

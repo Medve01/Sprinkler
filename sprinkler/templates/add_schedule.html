@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Lexie Sprinkler Controller</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="static/util.css">
+<link rel="stylesheet" type="text/css" href="static/main.css">
+
+<body>
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100">
+                <form action="/add" method="POST">
+                <table>
+                    <thead>
+                        <tr class="table100-head">
+                            <th class="column1" colspan="4">Add schedule</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Day of week</th>
+                            <td>
+                                <select name="day_of_week">
+                                    <option value="*">*</option>
+                                    <option value="1">Monday</option>
+                                    <option value="2">Tuesday</option>
+                                    <option value="3">Wednesday</option>
+                                    <option value="4">Thursday</option>
+                                    <option value="5">Friday</option>
+                                    <option value="6">Saturday</option>
+                                    <option value="0">Sunday</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Hour</th>
+                            <td>
+                                <input type="text" maxlength=2 size=3 name="hour"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Minute</th>
+                            <td>
+                                <input type="text" maxlength=2 size=3 name="minute"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Zone</th>
+                            <td>
+                                <select name="zone">
+                                    <option value="1">Grass</option>
+                                    <option value="2">Flowers</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>On</th>
+                            <td>
+                                <select name="switch">
+                                    <option value="1">On</option>
+                                    <option value="0">Off</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan=2>
+                                <input type="submit" value="Save schedule"></input>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
