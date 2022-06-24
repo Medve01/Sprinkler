@@ -1,9 +1,13 @@
 """Relay control through GPIO"""
-from flask import current_app
-import RPi.GPIO as gpio
 import time
 
+from flask import current_app
+
+import RPi.GPIO as gpio
+
+
 def initialize_gpio(pin):
+    """Set GPIO defaults and flash them"""
     gpio.setmode(gpio.BCM)
     gpio.setup(pin, gpio.OUT)
     for _1 in range(2):
