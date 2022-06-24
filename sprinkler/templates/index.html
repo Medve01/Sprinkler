@@ -15,7 +15,10 @@
             <td>{{ zone['id'] }}</td><td>
             <td>{{ zone['name'] }}</td>
             <td>{{ zone['on'] }}</td>
-            <td><button>ON</button><button>OFF</button></td>
+            <td>
+                <a href="/?zone_id={{ zone['id'] }}&onoff=on">Turn on</a><br/>
+                <a href="/?zone_id={{ zone['id'] }}&onoff=off">Turn off</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
