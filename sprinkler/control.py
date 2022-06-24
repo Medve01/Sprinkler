@@ -25,8 +25,10 @@ def get_relay_status(zone_id):
     zones = current_app.config['ZONES']
     for zone in zones:
         if zone['id'] == zone_id:
-            output = DigitalOutputDevice(zone['pin'], active_high=True, initial_value=None)
-            zone['on'] = bool(output.value)
+            gpio.setmode(gpio.BCM)
+            gpio.setup(zone['pin'], gpio.OUT)
+            output = gpio.input(zone['pin'])
+            zone['on'] = bool(output)
             return zone
     return None
 
@@ -44,12 +46,13 @@ def set_relay(zone_id, on): #pylint:disable=invalid-name
     zones = current_app.config['ZONES']
     for zone in zones:
         if zone['id'] == zone_id:
-            output = DigitalOutputDevice(zone['pin'], active_high=True, initial_value=None)
+            gpio.setmode(gpio.BCM)
+            gpio.setup(zone['pin'], gpio.OUT)
             current_app.logger.info('Switching zone ' + zone['name'] + ' ' + str(on))
             if on:
-                output.on()
+                gpio.output(zone['pin'], gpio.HIGH)
             else:
-                output.off()
+                gpio.output(zone['pin'], gpio.LOW)
             zone['on'] = on
             return zone
     return None
