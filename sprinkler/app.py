@@ -5,6 +5,7 @@ import logging
 from flask import Flask
 
 from sprinkler.control import initialize_gpio
+
 from sprinkler.views import api, ui
 
 logging.basicConfig(filename='sprinkler.log',
