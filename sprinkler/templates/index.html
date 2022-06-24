@@ -1,26 +1,71 @@
-<html>
-    <head><title>Lexie sprinkler system</title></head>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Lexie Sprinkler Controller</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+
+<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+
+<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+
+<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+
+<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+
+<link rel="stylesheet" type="text/css" href="static/util.css">
+<link rel="stylesheet" type="text/css" href="static/main.css">
+
 <body>
-    <h3>Lexie sprinkler system active</h3>
-    <h4>Active zones:</h4>
-    <table border=1>
-        <tr>
-            <th>Zone ID</th>
-            <th>Name</th>
-            <th>Is on?</th>
-            <th></th>
-        </tr>
-        {% for zone in zones %}
-        <tr>
-            <td>{{ zone['id'] }}</td>
-            <td>{{ zone['name'] }}</td>
-            <td>{{ zone['on'] }}</td>
-            <td>
-                <a href="/?zone_id={{ zone['id'] }}&onoff=on">Turn on</a><br/>
-                <a href="/?zone_id={{ zone['id'] }}&onoff=off">Turn off</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="limiter">
+    <div class="container-table100">
+        <!-- <h3>Lexie Sprinkler Controller</h3> -->
+        <div class="wrap-table100">
+            <div class="table100">
+                <table>
+                    <thead>
+                        <tr class="table100-head">
+                            <th class="column1" colspan="4">Lexie Sprinkler Controller</th>
+                        </tr>
+                        <tr class="table100-head">
+                            <th class="column1">Id</th>
+                            <th class="column2">Name</th>
+                            <th class="column3">On</th>
+                            <th class="column4">Control</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for zone in zones %}
+                        <tr>
+                            <td class="column1">{{zone['id']}}</td>
+                            <td class="column2">{{zone['name']}}</td>
+                            <td class="column3">{{zone['on']}}</td>
+                            <td class="column4">
+                                <a href="/?zone_id={{ zone['id'] }}&onoff=on">Turn on</a> | 
+                                <a href="/?zone_id={{ zone['id'] }}&onoff=off">Turn off</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+
+<script src="vendor/bootstrap/js/popper.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="vendor/select2/select2.min.js"></script>
+
+<script src="js/main.js"></script>
+
 </body>
 </html>
