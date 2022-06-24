@@ -4,12 +4,12 @@
         {
             "id": "1",
             "name": "Grass",
-            "pin": 10
+            "pin": 26
         },
         {
             "id": "2",
             "name": "Flowers",
-            "pin": 15
+            "pin": 20
         }
     ],
     "FAKE_GPIO": true
