@@ -8,11 +8,11 @@ HIGH = 1
 LOW = 0
 
 def setmode(_a):
-   print(_a)
+   pass
 def setup(_a, _b):
-   print(_a, _b)
+   pass
 def output(_a, _b):
-   with open('/tmp/fake_gpio' + str(_a), 'w') as fakegpio:
+   with open('/tmp/gpio' + str(_a), 'w') as fakegpio:
       fakegpio.write(str(_b))
 def input(_a):
    if not exists('/tmp/gpio' + str(_a)):
@@ -25,4 +25,4 @@ def input(_a):
 def cleanup():
    print('Fucking cleanup called')
 def setwarnings(flag):
-   print(flag)
+   pass

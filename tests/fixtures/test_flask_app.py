@@ -1,11 +1,9 @@
 """ flask test app fixture """
 import pytest
-from os import makedirs
-from os.path import exists
 from sprinkler.app import create_app
 
 @pytest.fixture
-def flask_app(monkeypatch):
+def flask_app():
     """flask app fixture"""
 
     _app = create_app()

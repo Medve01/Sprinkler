@@ -1,5 +1,5 @@
 """Blueprints for UI and API"""
-from flask import Blueprint, current_app, jsonify, render_template
+from flask import Blueprint, current_app, jsonify, render_template, request
 
 from sprinkler import control
 
@@ -9,6 +9,15 @@ ui = Blueprint('ui', __name__, url_prefix='/')
 def index():
     """ Index page. Renders a page of the zones and their current status """
     zones = []
+    args = request.args
+    zone_id = args.get('zone_id')
+    onoff = args.get('onoff')
+    if None not in (zone_id, onoff):
+        if onoff == 'on':
+            on = True # pylint:disable=invalid-name
+        elif onoff == 'off':
+            on = False # pylint:disable=invalid-name
+        control.set_relay(zone_id, on)
     with current_app.app_context():
         defined_zones = current_app.config['ZONES']
         for defined_zone in defined_zones:
