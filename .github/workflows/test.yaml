@@ -37,7 +37,7 @@ jobs:
       - name: Static type checking (mypy)
         run: poetry run mypy --install-types --non-interactive --ignore-missing-imports sprinkler/
       - name: Static analysis
-        run: poetry run pylint --rcfile ./.pylintrc sprinkler
+        run: poetry run pylint sprinkler
       - name: Code Vulnerability Scan (bandit)
         run: poetry run bandit -r sprinkler
       - name: Unit tests
