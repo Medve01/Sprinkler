@@ -1,7 +1,16 @@
 """Relay control through GPIO"""
 from flask import current_app
-from gpiozero import DigitalOutputDevice
+import RPi.GPIO as gpio
+import time
 
+def initialize_gpio(pin):
+    gpio.setmode(BCM)
+    gpio.setup(pin, gpio.OUT)
+    for _1 in range(2):
+        gpio.output(pin, gpio.HIGH)
+        time.sleep(0.3)
+        gpio.output(pin, gpio.LOW)
+        time.sleep(0.3)
 
 def get_relay_status(zone_id):
     """Gets a status for a relay related to a sprinkler zone
