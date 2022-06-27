@@ -21,6 +21,7 @@ tox = "^3.25.0"
 isort = "^5.10.1"
 mypy = "^0.961"
 bandit = "^1.7.4"
+beautifulsoup4 = "^4.11.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

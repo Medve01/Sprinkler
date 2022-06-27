@@ -1,9 +1,8 @@
 """Blueprints for UI and API"""
-from crypt import methods
-from flask import Blueprint, current_app, jsonify, redirect, render_template, request
+from flask import (Blueprint, current_app, jsonify, redirect, render_template,
+                   request)
 
-from sprinkler import control
-from sprinkler import scheduler
+from sprinkler import control, scheduler
 
 ui = Blueprint('ui', __name__, url_prefix='/')
 

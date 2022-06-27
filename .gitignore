@@ -152,5 +152,5 @@ pytest-report.html
 
 .idea/
 
-routines_db.json
+schedules.json
 flask_secret.json

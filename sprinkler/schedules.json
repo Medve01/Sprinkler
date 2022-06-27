@@ -1,1 +1,1 @@
-{"schedules": {"3": {"id": "QQz38t2W6jFnSYHYQtNQR6", "day_of_week": "5", "hour": "5", "minute": "0", "zone_id": "1", "switch": "1"}}}
+{"schedules": {"3": {"id": "QQz38t2W6jFnSYHYQtNQR6", "day_of_week": "5", "hour": "5", "minute": "0", "zone_id": "1", "switch": "1"}, "4": {"id": "RbkXhpffpC96Vwr5jSq8bV", "day_of_week": "*", "hour": "10", "minute": "0", "zone_id": "1", "switch": "1"}}}

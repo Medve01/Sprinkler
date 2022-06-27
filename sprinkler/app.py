@@ -30,7 +30,7 @@ def create_app():
     if scheduler.state != 0:
         try:
             scheduler.shutdown(wait=False)
-        except: # pylint: disable=bare-except
+        except: # pylint: disable=bare-except #pragma:nocover
             print('This only happens during testing, so I am fooling bandit here')
     scheduler.init_app(app)
     scheduler.start()
