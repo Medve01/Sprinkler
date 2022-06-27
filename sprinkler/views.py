@@ -44,7 +44,7 @@ def add_schedule_get():
 @ui.route('/add', methods=['POST'])
 def add_schedule_post():
     """ Saves the schedule to DB """
-    scheduler.add_schedule_to_db(
+    scheduler.add_schedule(
         day_of_week=request.form.get('day_of_week'),
         hour=request.form.get('hour'),
         minute=request.form.get('minute'),

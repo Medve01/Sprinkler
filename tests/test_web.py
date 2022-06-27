@@ -130,7 +130,7 @@ def mock_add_schedule(day_of_week, hour, minute, zone_id, switch):
     }
 
 def test_schedule_add(client, monkeypatch):
-    monkeypatch.setattr('sprinkler.scheduler.add_schedule_to_db', mock_add_schedule)
+    monkeypatch.setattr('sprinkler.scheduler.add_schedule', mock_add_schedule)
     res = client.post('/add', data={
         'day_of_week': '*',
         'hour': 10,

@@ -3,8 +3,27 @@ import tinydb
 from flask import current_app
 from shortuuid import uuid
 
+from sprinkler.control import set_relay
+from sprinkler.extensions import scheduler
 
-def add_schedule_to_db(day_of_week, hour, minute, zone_id, switch):
+
+def load_all_schedules():
+    """ Loads all schedules from SCHEDULES_DB and creates a job for them in APScheduler """
+    with scheduler.app.app_context():
+        schedules = get_all_schedules()
+        for schedule in schedules:
+            scheduler.add_job(
+                id = schedule['id'],
+                func=set_relay,
+                args=[schedule['zone_id'], bool(int(schedule['switch']))],
+                trigger='cron',
+                day_of_week = schedule['day_of_week'],
+                hour = schedule['hour'],
+                minute = schedule['minute']
+            )
+
+
+def add_schedule(day_of_week, hour, minute, zone_id, switch):
     """ adds a schedule to database """
     value = {
         'id': uuid(),
@@ -17,6 +36,15 @@ def add_schedule_to_db(day_of_week, hour, minute, zone_id, switch):
     database = tinydb.TinyDB(current_app.config['SCHEDULES_DB'])
     db_table = database.table('schedules')
     db_table.insert(value)
+    scheduler.add_job(
+        id = value['id'],
+        func=set_relay,
+        args=[value['zone_id'], bool(int(value['switch']))],
+        trigger='cron',
+        day_of_week = value['day_of_week'],
+        hour = value['hour'],
+        minute = value['minute']
+)
     return value['id']
 
 def get_all_schedules():
@@ -30,3 +58,4 @@ def remove_schedule(schedule_id):
     database = tinydb.TinyDB(current_app.config['SCHEDULES_DB'])
     db_table = database.table('schedules')
     db_table.remove(tinydb.Query().id == schedule_id)
+    scheduler.remove_job(schedule_id)
