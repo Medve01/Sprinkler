@@ -53,6 +53,29 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <table>
+                    <thead>
+                        <tr class="table100-head">
+                            <th class="column1" colspan="4">Schedules (<a href="/add">Add</a>)</th>
+                        </tr>
+                        <tr class="table100-head">
+                            <th class="column1">Day of week</th>
+                            <th class="column2">Time</th>
+                            <th class="column3">Action</th>
+                            <th class="column4"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for schedule in schedules %}
+                        <tr>
+                            <td class="column1">{{schedule['day_of_week']}}</td>
+                            <td class="column2">{{schedule['hour']}}:{{schedule['minute']}}</td>
+                            <td class="column3">{{schedule['switch']}} {{schedule['zone_id']}}</td>
+                            <td class="column4"><a href="/delete?id={{schedule['id']}}">Delete schedule</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

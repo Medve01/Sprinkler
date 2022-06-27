@@ -53,11 +53,11 @@
   
   
   /* ------------------------------------ */
-  input {
+  /* input {
     display: block;
       outline: none;
       border: none !important;
-  }
+  } */
   
   textarea {
     display: block;
@@ -69,15 +69,15 @@
   }
   
   /* ------------------------------------ */
-  button {
+  /* button {
       outline: none !important;
       border: none;
       background: transparent;
-  }
+  } */
   
-  button:hover {
+  /* button:hover {
       cursor: pointer;
-  }
+  } */
   
   iframe {
       border: none !important;

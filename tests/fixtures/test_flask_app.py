@@ -1,5 +1,6 @@
 """ flask test app fixture """
 import pytest
+import os
 from sprinkler.app import create_app
 
 @pytest.fixture
@@ -11,14 +12,20 @@ def flask_app():
             {
                 'id': '1',
                 'name': 'test zone 1',
-                'pin': 10
+                'pin': 10,
+                'reverse_logic': False
             },
             {
                 'id': '2',
                 'name': 'test zone 2',
-                'pin': 15
+                'pin': 15,
+                'reverse_logic': True
             }
         ]
+    _app.config['SCHEDULES_DB'] = '/tmp/schedules.json'
+    yield _app
+    if os.path.exists(_app.config['SCHEDULES_DB']):
+        os.remove(_app.config['SCHEDULES_DB'])
     return _app
 
 @pytest.fixture

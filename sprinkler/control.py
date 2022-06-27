@@ -33,6 +33,8 @@ def get_relay_status(zone_id):
             gpio.setup(zone['pin'], gpio.OUT)
             output = gpio.input(zone['pin'])
             zone['on'] = bool(output)
+            if zone['reverse_logic']:
+                zone['on'] = not zone['on']
             return zone
     return None
 
@@ -53,7 +55,11 @@ def set_relay(zone_id, on): #pylint:disable=invalid-name
             gpio.setmode(gpio.BCM)
             gpio.setup(zone['pin'], gpio.OUT)
             current_app.logger.info('Switching zone ' + zone['name'] + ' ' + str(on))
-            if on:
+            if zone['reverse_logic']:
+                on_value = not on
+            else:
+                on_value = on
+            if on_value:
                 gpio.output(zone['pin'], gpio.HIGH)
             else:
                 gpio.output(zone['pin'], gpio.LOW)

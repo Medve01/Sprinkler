@@ -4,13 +4,15 @@
         {
             "id": "1",
             "name": "Grass",
-            "pin": 26
+            "pin": 26,
+            "reverse_logic": true
         },
         {
             "id": "2",
             "name": "Flowers",
-            "pin": 20
+            "pin": 20,
+            "reverse_logic": true
         }
     ],
-    "FAKE_GPIO": true
+    "SCHEDULES_DB": "schedules.json"
 }

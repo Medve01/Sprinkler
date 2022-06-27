@@ -1,7 +1,8 @@
 """Blueprints for UI and API"""
-from flask import Blueprint, current_app, jsonify, render_template, request
+from flask import (Blueprint, current_app, jsonify, redirect, render_template,
+                   request)
 
-from sprinkler import control
+from sprinkler import control, scheduler
 
 ui = Blueprint('ui', __name__, url_prefix='/')
 
@@ -22,7 +23,42 @@ def index():
         defined_zones = current_app.config['ZONES']
         for defined_zone in defined_zones:
             zones.append(control.get_relay_status(defined_zone['id']))
-    return render_template('index.html', zones=zones)
+    schedules = scheduler.get_all_schedules()
+    days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    switches = ['Turn off', 'Turn on']
+    for schedule in schedules:
+        temp = schedule['day_of_week']
+        if schedule['day_of_week'] != '*':
+            schedule['day_of_week'] = days[int(temp)]
+        for zone in current_app.config['ZONES']:
+            if zone['id'] == schedule['zone_id']:
+                schedule['zone_id'] = zone['name']
+        schedule['switch'] = switches[int(schedule['switch'])]
+    return render_template('index.html', zones=zones, schedules=schedules)
+
+@ui.route('/add', methods=['GET'])
+def add_schedule_get():
+    """ Renders the add schedule page """
+    return render_template('add_schedule.html')
+
+@ui.route('/add', methods=['POST'])
+def add_schedule_post():
+    """ Saves the schedule to DB """
+    scheduler.add_schedule_to_db(
+        day_of_week=request.form.get('day_of_week'),
+        hour=request.form.get('hour'),
+        minute=request.form.get('minute'),
+        zone_id=request.form.get('zone'),
+        switch=request.form.get('switch')
+    )
+    return redirect('/')
+
+@ui.route('/delete', methods=['GET'])
+def delete_schedule():
+    """ Saves the schedule to DB """
+    args = request.args
+    scheduler.remove_schedule(args.get('id'))
+    return redirect('/')
 
 
 api = Blueprint('api', __name__, url_prefix='/api')
