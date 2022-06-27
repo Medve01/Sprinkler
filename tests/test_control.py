@@ -15,7 +15,7 @@ def test_control_get_status(monkeypatch, flask_app):
                 'id': '2',
                 'name': 'test zone 2',
                 'pin': 15,
-                'on': False,
+                'on': True,
                 'reverse_logic': True
             }
         assert get_relay_status('3') == None
