@@ -53,8 +53,9 @@
                             <th>Zone</th>
                             <td>
                                 <select name="zone">
-                                    <option value="1">Grass</option>
-                                    <option value="2">Flowers</option>
+                                    {% for zone in zones %}
+                                    <option value="{{ zone['id'] }}">{{ zone['name'] }}</option>
+                                    {% endfor %}
                                 </select>
                             </td>
                         </tr>

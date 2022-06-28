@@ -39,7 +39,7 @@ def index():
 @ui.route('/add', methods=['GET'])
 def add_schedule_get():
     """ Renders the add schedule page """
-    return render_template('add_schedule.html')
+    return render_template('add_schedule.html', zones=current_app.config['ZONES'])
 
 @ui.route('/add', methods=['POST'])
 def add_schedule_post():
