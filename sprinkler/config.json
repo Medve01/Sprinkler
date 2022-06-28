@@ -3,14 +3,26 @@
     "ZONES": [
         {
             "id": "1",
-            "name": "Grass",
-            "pin": 26,
+            "name": "Channel 1",
+            "pin": 4,
             "reverse_logic": true
         },
         {
             "id": "2",
-            "name": "Flowers",
-            "pin": 20,
+            "name": "Channel 2",
+            "pin": 27,
+            "reverse_logic": true
+        },
+        {
+            "id": "3",
+            "name": "Channel 3",
+            "pin": 22,
+            "reverse_logic": true
+        },
+        {
+            "id": "4",
+            "name": "Channel 4",
+            "pin": 23,
             "reverse_logic": true
         }
     ],
