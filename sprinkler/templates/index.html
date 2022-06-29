@@ -23,9 +23,10 @@
 
 <body>
 <div class="limiter">
-    <div class="container-table100">
+        <div class="container-table100">
         <!-- <h3>Lexie Sprinkler Controller</h3> -->
-        <div class="wrap-table100">
+
+            <div class="wrap-table100">
             <div class="table100">
                 <table>
                     <thead>
@@ -74,6 +75,16 @@
                             <td class="column4"><a href="/delete?id={{schedule['id']}}">Delete schedule</a></td>
                         </tr>
                         {% endfor %}
+                    </tbody>
+                </table>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="column4">CPU temperature: {{ cpu_temp['cpu_temp'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="column4">Sample taken: {{ cpu_temp['sample_time'] }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

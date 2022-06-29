@@ -1,4 +1,6 @@
 """Blueprints for UI and API"""
+import json
+
 from flask import (Blueprint, current_app, jsonify, redirect, render_template,
                    request)
 
@@ -34,7 +36,9 @@ def index():
             if zone['id'] == schedule['zone_id']:
                 schedule['zone_id'] = zone['name']
         schedule['switch'] = switches[int(schedule['switch'])]
-    return render_template('index.html', zones=zones, schedules=schedules)
+    with open('cputemp.json', 'r', encoding='UTF-8') as cputemp_file:
+        cpu_temp = json.load(cputemp_file)
+    return render_template('index.html', zones=zones, schedules=schedules, cpu_temp=cpu_temp)
 
 @ui.route('/add', methods=['GET'])
 def add_schedule_get():
