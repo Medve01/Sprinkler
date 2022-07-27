@@ -21,24 +21,24 @@ def index():
         elif onoff == 'off':
             on = False # pylint:disable=invalid-name
         control.set_relay(zone_id, on)
-    with current_app.app_context():
-        defined_zones = current_app.config['ZONES']
-        for defined_zone in defined_zones:
-            zones.append(control.get_relay_status(defined_zone['id']))
-    schedules = scheduler.get_all_schedules()
-    days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    switches = ['Turn off', 'Turn on']
-    for schedule in schedules:
-        temp = schedule['day_of_week']
-        if schedule['day_of_week'] != '*':
-            schedule['day_of_week'] = days[int(temp)]
-        for zone in current_app.config['ZONES']:
-            if zone['id'] == schedule['zone_id']:
-                schedule['zone_id'] = zone['name']
-        schedule['switch'] = switches[int(schedule['switch'])]
+    # with current_app.app_context():
+    #     defined_zones = current_app.config['ZONES']
+    #     for defined_zone in defined_zones:
+    #         zones.append(control.get_relay_status(defined_zone['id']))
+    # schedules = scheduler.get_all_schedules()
+    # days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    # switches = ['Turn off', 'Turn on']
+    # for schedule in schedules:
+    #     temp = schedule['day_of_week']
+    #     if schedule['day_of_week'] != '*':
+    #         schedule['day_of_week'] = days[int(temp)]
+    #     for zone in current_app.config['ZONES']:
+    #         if zone['id'] == schedule['zone_id']:
+    #             schedule['zone_id'] = zone['name']
+    #     schedule['switch'] = switches[int(schedule['switch'])]
     with open('cputemp.json', 'r', encoding='UTF-8') as cputemp_file:
         cpu_temp = json.load(cputemp_file)
-    return render_template('index.html', zones=zones, schedules=schedules, cpu_temp=cpu_temp)
+    return render_template('index.html', cpu_temp=cpu_temp)
 
 @ui.route('/add', methods=['GET'])
 def add_schedule_get():
@@ -90,3 +90,13 @@ def set_zone(zone_id, onoff):
     if status is None:
         return jsonify({'Error': 'Invalid zone id'}), 404
     return jsonify(status)
+
+@api.route('/zone', methods=['GET'])
+def get_zones():
+    """ Gets a list of all zones """
+    zones = []
+    with current_app.app_context():
+        defined_zones = current_app.config['ZONES']
+        for defined_zone in defined_zones:
+            zones.append(control.get_relay_status(defined_zone['id']))
+    return jsonify(zones)

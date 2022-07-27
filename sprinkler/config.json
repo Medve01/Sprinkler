@@ -3,25 +3,25 @@
     "ZONES": [
         {
             "id": "1",
-            "name": "Channel 1",
+            "name": "Zone 1",
             "pin": 4,
             "reverse_logic": true
         },
         {
             "id": "2",
-            "name": "Channel 2",
+            "name": "Zone 2",
             "pin": 27,
             "reverse_logic": true
         },
         {
             "id": "3",
-            "name": "Channel 3",
+            "name": "Zone 3",
             "pin": 22,
             "reverse_logic": true
         },
         {
             "id": "4",
-            "name": "Channel 4",
+            "name": "Zone 4",
             "pin": 23,
             "reverse_logic": true
         }

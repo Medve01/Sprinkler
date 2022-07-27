@@ -1,105 +1,488 @@
+{% extends "layouts/base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Lexie Sprinkler Controller</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %} Dashboard {% endblock %} 
 
-<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+* {
+    box-shadow: none;
+}
+.power-switch {
+  --color-invert: #ffffff;
+  --width: 50px;
+  --height: 50px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--width);
+  height: var(--height);
+}
+.power-switch .button {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.power-switch .button:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: radial-gradient(circle closest-side, var(--color-invert), transparent);
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 1s ease, transform 1s ease;
+  transform: perspective(1px) translateZ(0);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+.power-switch .button .power-on,
+.power-switch .button .power-off {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  fill: none;
+  stroke: var(--color-invert);
+  stroke-width: 8px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.power-switch .button .power-on .line,
+.power-switch .button .power-off .line {
+  opacity: 0.2;
+}
+.power-switch .button .power-on .circle,
+.power-switch .button .power-off .circle {
+  opacity: 0.2;
+  transform: rotate(-58deg);
+  transform-origin: center 27px;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 40;
+}
+.power-switch .button .power-on {
+  filter: drop-shadow(0px 0px 6px rgba(255, 255, 255, 0.8));
+}
+.power-switch .button .power-on .line {
+  opacity: 0;
+  transition: opacity 0.3s ease 1s;
+}
+.power-switch .button .power-on .circle {
+  opacity: 1;
+  stroke-dashoffset: 220;
+  transition: transform 0s ease, stroke-dashoffset 1s ease 0s;
+}
+.power-switch input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  cursor: pointer;
+  opacity: 0;
+}
+.power-switch input:checked + .button:after {
+  opacity: 0.15;
+  transform: scale(2) perspective(1px) translateZ(0);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.power-switch input:checked + .button .power-on,
+.power-switch input:checked + .button .power-off {
+  -webkit-animation: click-animation 0.3s ease forwards;
+          animation: click-animation 0.3s ease forwards;
+  transform: scale(1);
+}
+.power-switch input:checked + .button .power-on .line,
+.power-switch input:checked + .button .power-off .line {
+  -webkit-animation: line-animation 0.8s ease-in forwards;
+          animation: line-animation 0.8s ease-in forwards;
+}
+.power-switch input:checked + .button .power-on .circle,
+.power-switch input:checked + .button .power-off .circle {
+  transform: rotate(302deg);
+}
+.power-switch input:checked + .button .power-on .line {
+  opacity: 1;
+  transition: opacity 0.05s ease-in 0.55s;
+}
+.power-switch input:checked + .button .power-on .circle {
+  transform: rotate(302deg);
+  stroke-dashoffset: 40;
+  transition: transform 0.4s ease 0.2s, stroke-dashoffset 0.4s ease 0.2s;
+}
 
-<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+@-webkit-keyframes line-animation {
+  0% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(10px);
+  }
+  40% {
+    transform: translateY(-25px);
+  }
+  60% {
+    transform: translateY(-25px);
+  }
+  85% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
 
-<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+@keyframes line-animation {
+  0% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(10px);
+  }
+  40% {
+    transform: translateY(-25px);
+  }
+  60% {
+    transform: translateY(-25px);
+  }
+  85% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+@-webkit-keyframes click-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes click-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+body {
+	font-size: 20px
+}
 
-<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
 
-<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 
-<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+.switch-holder {
+    display: flex;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    justify-content: space-between;
+    align-items: center;
+}
 
-<link rel="stylesheet" type="text/css" href="static/util.css">
-<link rel="stylesheet" type="text/css" href="static/main.css">
+.switch-label {
+    width: 150px;
+}
 
-<body>
-<div class="limiter">
-        <div class="container-table100">
-        <!-- <h3>Lexie Sprinkler Controller</h3> -->
+.switch-label i {
+    margin-right: 5px;
+}
 
-            <div class="wrap-table100">
-            <div class="table100">
-                <table>
-                    <thead>
-                        <tr class="table100-head">
-                            <th class="column1" colspan="4">Lexie Sprinkler Controller</th>
-                        </tr>
-                        <tr class="table100-head">
-                            <th class="column1">Id</th>
-                            <th class="column2">Name</th>
-                            <th class="column3">On</th>
-                            <th class="column4">Control</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for zone in zones %}
-                        <tr>
-                            <td class="column1">{{zone['id']}}</td>
-                            <td class="column2">{{zone['name']}}</td>
-                            <td class="column3">{{zone['on']}}</td>
-                            <td class="column4">
-                                <a href="/?zone_id={{ zone['id'] }}&onoff=on">Turn on</a> | 
-                                <a href="/?zone_id={{ zone['id'] }}&onoff=off">Turn off</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <table>
-                    <thead>
-                        <tr class="table100-head">
-                            <th class="column1" colspan="4">Schedules (<a href="/add">Add</a>)</th>
-                        </tr>
-                        <tr class="table100-head">
-                            <th class="column1">Day of week</th>
-                            <th class="column2">Time</th>
-                            <th class="column3">Action</th>
-                            <th class="column4"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for schedule in schedules %}
-                        <tr>
-                            <td class="column1">{{schedule['day_of_week']}}</td>
-                            <td class="column2">{{schedule['hour']}}:{{schedule['minute']}}</td>
-                            <td class="column3">{{schedule['switch']}} {{schedule['zone_id']}}</td>
-                            <td class="column4"><a href="/delete?id={{schedule['id']}}">Delete schedule</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="column4">CPU temperature: {{ cpu_temp['cpu_temp'] }}</td>
-                        </tr>
-                        <tr>
-                            <td class="column4">Sample taken: {{ cpu_temp['sample_time'] }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+.switch-toggle {
+    height: 20px;
+}
+
+.switch-toggle input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    z-index: -2;
+}
+
+.switch-toggle input[type="checkbox"] + label {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 0;
+    cursor: pointer;
+    box-shadow: inset -8px -8px 15px rgba(255,255,255,.6),
+                inset 10px 10px 10px rgba(0,0,0, .25);
+    
+}
+
+.switch-toggle input[type="checkbox"] + label::before {
+    position: absolute;
+    content: 'OFF';
+    font-size: 13px;
+    text-align: center;
+    line-height: 25px;
+    top: 8px;
+    left: 8px;
+    width: 45px;
+    height: 25px;
+    border-radius: 20px;
+    background-color: #d1dad3;
+    box-shadow: -3px -3px 5px rgba(255,255,255,.5),
+                3px 3px 5px rgba(0,0,0, .25);
+    transition: .3s ease-in-out;
+}
+
+.switch-toggle input[type="checkbox"]:checked + label::before {
+    left: 50%;
+    content: 'ON';
+    color: #fff;
+    background-color: #00b33c;
+    box-shadow: -3px -3px 5px rgba(255,255,255,.5),
+                3px 3px 5px #00b33c;
+}
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+        <!-- add room modal -->
+        <div class="modal fade" id="modal_add_room" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <form id="add_room">
+
+                  <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="exampleModalLabel">Please name your room</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-group">
+                        <input type="text" name="room_name"></input>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" onclick="add_room()">Add room</button>
+                  </div>
+                </form>
+              </div>
             </div>
-        </div>
-    </div>
-</div>
+          </div>
+          <!-- /add room modal -->
 
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<div class="content">
+		<div class="panel-header bg-primary-gradient">
+			<div class="page-inner py-5">
+				<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+					<div>
+						<h2 class="text-white pb-2 fw-bold">
+              <!-- <div>
+                
+                <div class="dropdown">
+                  <button visible="false" class="btn btn-dropdown-card-header btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-options-vertical"></i>
+                  </button>
+                  Lexie Dashboard
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_add_room">Add room</a>
+                    <a class="dropdown-item" href="/ui/add-device">Add device</a>
+                    <a class="dropdown-item" href="/ui/device-list">All devices</a>
+                    <a class="dropdown-item" href="/ui/routines">Routines</a>
+                    <a class="dropdown-item" href="/ui/eventlog">Event log</a>
+                    <a class="dropdown-item" href="/ui/change-password">Change UI password</a>
+                  </div>
+                </div>
+              </div> -->
+            </h2>
+						<h5 class="text-white op-7 mb-2">Irrigation zones</h5>
+					</div>
 
-<script src="vendor/bootstrap/js/popper.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+				</div>
+			</div>
+		</div>
 
-<script src="vendor/select2/select2.min.js"></script>
 
-<script src="js/main.js"></script>
+<!-- Room -->
+        <!-- delete room modal -->
+        <!-- <div class="modal fade" rv-id="room.room_id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <form action="/ui/delete_room" method="post"rv-id="room.room_id">
 
-</body>
-</html>
+                  <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="exampleModalLabel" rv-text="room.room_name"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-group">
+                        Please confirm that you want to delete the room. Any devices assigned to this room, will be preserved and will not be assigned to any room.
+                        <input type="hidden" name="room_id" rv-value="room.room_id"></input>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" rv-on-click="controller.delete_room">Delete room</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div> -->
+          <!-- /delete room modal -->
+
+					<div class="card" id="zone">
+            <div class="card-header">
+							<div class="card-head-row">
+								<div class="card-title" rv-text="room.room_name"></div>
+								<div class="card-tools">
+                  <!-- <div class="dropdown">
+                    <button rv-show="room.room_visible" visible="false" class="btn btn-dropdown-card-header btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="icon-options-vertical"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">Rename room</a>
+                      <a class="dropdown-item" href="#" data-toggle="modal" rv-data-target="room.room_id | hashtag">Delete room</a>
+                    </div>
+                  </div> -->
+                </div>
+							</div>
+						</div>
+              <!-- Device -->									
+            <div class="card-body pb-0" rv-each-zone="zones">
+              <div class="switch-holder">
+                <div class="switch-label">
+                  <span rv-text="zone.name"></span>
+                </div>
+                <div class="power-switch">
+                  <input type="checkbox" rv-checked="zone.on" rv-on-click="controller.toggle_relay"/>
+                  <div class="button">
+                    <svg class="power-off">
+                      <use xlink:href="#line" class="line" />
+                      <use xlink:href="#circle" class="circle" />
+                    </svg>
+                    <svg class="power-on">
+                      <use xlink:href="#line" class="line" />
+                      <use xlink:href="#circle" class="circle" />
+                    </svg>
+                  </div>
+                </div>
+                <!-- <div class="dropdown">
+                  <button class="btn btn-dropdown-card-header btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-options-vertical"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" data-toggle="modal" rv-data-target="device.device_id | modal 'movetoroom' true">Move to room...</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" rv-data-target="device.device_id | modal 'deletedevice' true">Delete device</a>
+                  </div>
+                </div> -->
+                <!-- delete device modal -->
+                <!-- <div class="modal fade" rv-id="device.device_id | modal 'deletedevice' false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h5 class="modal-title text-primary" id="exampleModalLabel" rv-text="device.device_name"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                              <div class="form-group">
+                                Please confirm that you want to delete the device. All data will be deleted and there's no way to undo this.
+                                <input type="hidden" name="device_id" rv-value="device.device_id"></input>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" rv-on-click="controller.delete_device">Delete device</button>
+                          </div>
+                      </div>
+                    </div>
+                  </div> -->
+                  <!-- /delete room modal -->
+                <!-- <div class="modal fade" rv-id="device.device_id | modal 'movetoroom' false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <form action="/ui/move_device" method="post"rv-id="device.device_id">
+
+                        <div class="modal-header">
+                          <h5 class="modal-title text-primary" id="exampleModalLabel" rv-text="device.device_name"></h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                              <input type="hidden" name="device_id" rv-value="device.device_id"></input>
+                              <room-selector></room-selector>
+                              <!--  class="col-form-label" -->
+                              <!-- class="form-control input-border-bottom" -->
+                            <!-- </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary" rv-on-click="controller.move_device">Move device</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div> -->
+            </div>
+              <div class="separator-dashed"></div>
+              <!-- /Device -->
+						</div>
+					</div>
+				</div>
+
+  <!-- SVG -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="line">
+      <line x1="75" y1="34" x2="75" y2="58"/>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="circle">
+      <circle cx="75" cy="80" r="35"/>
+    </symbol>
+  </svg>
+
+  <!-- rivets templates -->
+  <!-- <template id="roomselector-template">
+    <select  id="room-selector" name="room_id" required>
+      {% for room in rooms %}
+        {% if room.id %}
+        <option value="{{room.id}}">{{room.name}}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </template> -->
+
+{% endblock content %}
+
+{% block javascripts %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sightglass@0.2.6/index.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/rivets@0.9.6/dist/rivets.min.js"></script> -->
+<script type="text/javascript" src="/static/assets/js/rivets.bundled.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script> -->
+<script type="text/javascript" src="/static/assets/js/lexie/dashboard.js"></script>
+
+{% endblock javascripts %}
