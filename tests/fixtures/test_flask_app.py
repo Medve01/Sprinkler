@@ -1,6 +1,7 @@
 """ flask test app fixture """
 import pytest
 import os
+import glob
 from sprinkler.app import create_app
 
 @pytest.fixture
@@ -22,10 +23,15 @@ def flask_app():
                 'reverse_logic': True
             }
         ]
+    _app.config['RAIN_SENSOR_ENABLED'] = True
+    _app.config['RAIN_SENSOR_PIN'] == 17
     _app.config['SCHEDULES_DB'] = '/tmp/schedules.json'
     yield _app
     if os.path.exists(_app.config['SCHEDULES_DB']):
         os.remove(_app.config['SCHEDULES_DB'])
+    fakegpio_files = glob.glob('/tmp/gpio*', recursive=False)
+    for file in fakegpio_files:
+        os.remove(file)
     return _app
 
 @pytest.fixture

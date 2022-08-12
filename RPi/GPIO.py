@@ -6,10 +6,13 @@ OUT = 1
 IN = 1
 HIGH = 1
 LOW = 0
+RISING = 1
+FALLING = 0
+PUD_DOWN = 0
 
 def setmode(_a):
    pass
-def setup(_a, _b):
+def setup(_a, _b, pull_up_down=None):
    pass
 def output(_a, _b):
    with open('/tmp/gpio' + str(_a), 'w') as fakegpio:
@@ -25,4 +28,7 @@ def input(_a):
 def cleanup():
    print('Fucking cleanup called')
 def setwarnings(flag):
+   pass
+
+def add_event_detect(_a, _b, callback):
    pass

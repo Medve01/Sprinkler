@@ -1,6 +1,5 @@
 """Relay control through GPIO"""
-# import time
-
+import tinydb
 from flask import current_app
 
 import RPi.GPIO as gpio
@@ -38,6 +37,26 @@ def get_relay_status(zone_id):
                 zone['on'] = not zone['on']
             return zone
     return None
+
+def set_sprinkler(zone_id, on): #pylint:disable=invalid-name
+    """ Starts a sprinkler. Checks if the rain sensor reported rain and if not, turns the relay on
+        if the <on> para is off, does not check rain sensor report, just turns off """
+    with scheduler.app.app_context():
+        database = tinydb.TinyDB(current_app.config['SCHEDULES_DB'])
+        events = database.table('events')
+        event = tinydb.Query()
+        had_rain_result = events.search(event.id == 'had_rain')
+        if len(had_rain_result) == 0:
+            had_rain = False
+        else:
+            had_rain = had_rain_result[0]['value']
+        if not had_rain:
+            #if we didn't have enough rain, we should execute the command
+            set_relay(zone_id, on)
+        else:
+            #Reset event, so next time we will execute
+            events.update({'id': 'had_rain', 'value': False}, event.id == 'had_rain')
+
 
 def set_relay(zone_id, on): #pylint:disable=invalid-name
     """Turns on/off a relay related to a zone
