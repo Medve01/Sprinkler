@@ -11,7 +11,7 @@ ui = Blueprint('ui', __name__, url_prefix='/')
 @ui.route('/')
 def index():
     """ Index page. Renders a page of the zones and their current status """
-    zones = []
+    # zones = []
     args = request.args
     zone_id = args.get('zone_id')
     onoff = args.get('onoff')
@@ -40,6 +40,22 @@ def index():
         cpu_temp = json.load(cputemp_file)
     return render_template('index.html', cpu_temp=cpu_temp)
 
+@ui.route('/schedules')
+def schedules_page():
+    """ List and add/remove schedules page """
+    schedules = scheduler.get_all_schedules()
+    days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    switches = ['Turn off', 'Turn on']
+    for schedule in schedules:
+        temp = schedule['day_of_week']
+        if schedule['day_of_week'] != '*':
+            schedule['day_of_week'] = days[int(temp)]
+        for zone in current_app.config['ZONES']:
+            if zone['id'] == schedule['zone_id']:
+                schedule['zone_id'] = zone['name']
+        schedule['switch'] = switches[int(schedule['switch'])]
+    return render_template('schedules.html', schedules=schedules)
+
 @ui.route('/add', methods=['GET'])
 def add_schedule_get():
     """ Renders the add schedule page """
@@ -55,14 +71,14 @@ def add_schedule_post():
         zone_id=request.form.get('zone'),
         switch=request.form.get('switch')
     )
-    return redirect('/')
+    return redirect('/schedules')
 
 @ui.route('/delete', methods=['GET'])
 def delete_schedule():
     """ Saves the schedule to DB """
     args = request.args
     scheduler.remove_schedule(args.get('id'))
-    return redirect('/')
+    return redirect('/schedules')
 
 
 api = Blueprint('api', __name__, url_prefix='/api')

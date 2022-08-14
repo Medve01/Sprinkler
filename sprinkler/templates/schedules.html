@@ -259,34 +259,6 @@ body {
 {% endblock stylesheets %}
 
 {% block content %}
-        <!-- add room modal -->
-        <div class="modal fade" id="modal_add_room" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <form id="add_room">
-
-                  <div class="modal-header">
-                    <h5 class="modal-title text-primary" id="exampleModalLabel">Please name your room</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <div class="form-group">
-                        <input type="text" name="room_name"></input>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" onclick="add_room()">Add room</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <!-- /add room modal -->
-
 	<div class="content">
 		<div class="panel-header bg-primary-gradient">
 			<div class="page-inner py-5">
@@ -296,48 +268,36 @@ body {
               |
 						    <a href="/schedules">Scheduled irrigation</a>
             </h5>
-            <h6 class="text-white op-8 mb-2">CPU temperature: {{ cpu_temp['cpu_temp'] }} Sample taken: {{ cpu_temp['sample_time'] }}</h6>
 					</div>
 
 				</div>
 			</div>
 		</div>
-					<div class="card" id="zone">
-              <!-- Device -->									
-            <div class="card-body pb-0" rv-each-zone="zones">
-              <div class="switch-holder">
-                <div class="switch-label">
-                  <span rv-text="zone.name"></span>
-                </div>
-                <div class="power-switch">
-                  <input type="checkbox" rv-checked="zone.on" rv-on-click="controller.toggle_relay"/>
-                  <div class="button">
-                    <svg class="power-off">
-                      <use xlink:href="#line" class="line" />
-                      <use xlink:href="#circle" class="circle" />
-                    </svg>
-                    <svg class="power-on">
-                      <use xlink:href="#line" class="line" />
-                      <use xlink:href="#circle" class="circle" />
-                    </svg>
-                  </div>
-                </div>
-            </div>
-              <div class="separator-dashed"></div>
-              <!-- /Device -->
-						</div>
-					</div>
-				</div>
 
-  <!-- SVG -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="line">
-      <line x1="75" y1="34" x2="75" y2="58"/>
-    </symbol>
-    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="circle">
-      <circle cx="75" cy="80" r="35"/>
-    </symbol>
-  </svg>
+          <a href="/add"><input type="button" value="Add schedule"/></a>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Day of week</th>
+                  <th>Time</th>
+                  <th>Zone</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for schedule in schedules %}
+                <tr>
+                  <td>{{ schedule['day_of_week'] }}</td>
+                  <td>{{ schedule['hour'] }}:{{ schedule['minute'] }}</td>
+                  <td>{{schedule['switch']}} {{schedule['zone_id']}}</td>
+                  <td><a href="/delete?id={{schedule['id']}}"><input type="button" value="Delete"/></a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
 
 {% endblock content %}
 
