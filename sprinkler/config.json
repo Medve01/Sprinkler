@@ -26,5 +26,7 @@
             "reverse_logic": true
         }
     ],
-    "SCHEDULES_DB": "schedules.json"
+    "SCHEDULES_DB": "schedules.json",
+    "RAIN_SENSOR_ENABLED": true,
+    "RAIN_SENSOR_PIN": 5
 }

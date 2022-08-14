@@ -3,7 +3,7 @@ import tinydb
 from flask import current_app
 from shortuuid import uuid
 
-from sprinkler.control import set_relay
+from sprinkler.control import set_sprinkler
 from sprinkler.extensions import scheduler
 
 
@@ -14,7 +14,7 @@ def load_all_schedules():
         for schedule in schedules:
             scheduler.add_job(
                 id = schedule['id'],
-                func=set_relay,
+                func=set_sprinkler,
                 args=[schedule['zone_id'], bool(int(schedule['switch']))],
                 trigger='cron',
                 day_of_week = schedule['day_of_week'],
@@ -38,7 +38,7 @@ def add_schedule(day_of_week, hour, minute, zone_id, switch):
     db_table.insert(value)
     scheduler.add_job(
         id = value['id'],
-        func=set_relay,
+        func=set_sprinkler,
         args=[value['zone_id'], bool(int(value['switch']))],
         trigger='cron',
         day_of_week = value['day_of_week'],
