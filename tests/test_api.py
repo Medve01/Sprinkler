@@ -1,3 +1,4 @@
+import json
 from tests.fixtures.test_flask_app import client, flask_app
 
 def mock_get_relay_status(zone):
@@ -52,3 +53,29 @@ def test_zones(client, monkeypatch):
     monkeypatch.setattr('sprinkler.control.get_relay_status', mock_get_relay_status)
     res = client.get('/api/zone')
     assert res.status_code == 200
+
+def mock_switch(switch_id, enabled=None):
+    if enabled is None:
+        return True
+    else:
+        return enabled
+
+def test_switch_get(client, monkeypatch):
+    monkeypatch.setattr('sprinkler.control.switch', mock_switch)
+    res = client.get('/api/switch/irrigation_enabled')
+    assert res.status_code == 200
+    assert res.json['value'] == True
+
+def test_switch_get_invalid_id(client):
+    res = client.get('/api/switch/nonexistent')
+    assert res.status_code == 400
+
+def test_switch_put(client, monkeypatch):
+    monkeypatch.setattr('sprinkler.control.switch', mock_switch)
+    res = client.put('/api/switch/irrigation_enabled', data=json.dumps({'value': False}))
+    assert res.status_code == 200
+    assert res.json['value'] == False
+
+def test_switch_put_invalid_id(client):
+    res = client.put('/api/switch/nonexistent', data=json.dumps({'value': False}))
+    assert res.status_code == 400

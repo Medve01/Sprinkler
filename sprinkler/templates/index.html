@@ -259,33 +259,7 @@ body {
 {% endblock stylesheets %}
 
 {% block content %}
-        <!-- add room modal -->
-        <div class="modal fade" id="modal_add_room" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <form id="add_room">
 
-                  <div class="modal-header">
-                    <h5 class="modal-title text-primary" id="exampleModalLabel">Please name your room</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <div class="form-group">
-                        <input type="text" name="room_name"></input>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" onclick="add_room()">Add room</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <!-- /add room modal -->
 
 	<div class="content">
 		<div class="panel-header bg-primary-gradient">
@@ -302,7 +276,57 @@ body {
 				</div>
 			</div>
 		</div>
-					<div class="card" id="zone">
+    <!-- Irrigation main switch -->
+    <div class="card" id="irrigation_enabled">
+      <div class="card-body pb-0">
+        <div class="switch-holder">
+          <div class="switch-label">
+            <span>Irrigation enabled</span>
+          </div>
+          <div class="power-switch">
+            <input type="checkbox" rv-checked = "irrigation_enabled.value" rv-on-click="controller.toggle_switch" />
+            <div class="button">
+              <svg class="power-off">
+                <use xlink:href="#line" class="line" />
+                <use xlink:href="#circle" class="circle" />
+              </svg>
+              <svg class="power-on">
+                <use xlink:href="#line" class="line" />
+                <use xlink:href="#circle" class="circle" />
+              </svg>
+            </div>
+          </div>
+      </div>
+      <div class="separator-dashed"></div>
+    </div>
+  </div>
+  <!-- /Irrigation main switch -->
+      <!-- Pause irrigation button -->
+    <div class="card" id="irrigation_paused">
+    <div class="card-body pb-0">
+      <div class="switch-holder">
+        <div class="switch-label">
+          <span>Pause irrigation for today</span>
+        </div>
+        <div class="power-switch">
+          <input type="checkbox" rv-checked = "irrigation_paused.value" rv-on-click="controller.toggle_switch"/>
+          <div class="button">
+            <svg class="power-off">
+              <use xlink:href="#line" class="line" />
+              <use xlink:href="#circle" class="circle" />
+            </svg>
+            <svg class="power-on">
+              <use xlink:href="#line" class="line" />
+              <use xlink:href="#circle" class="circle" />
+            </svg>
+          </div>
+        </div>
+    </div>
+    <div class="separator-dashed"></div>
+  </div>
+</div>
+<!-- /Pause irrigation button -->
+  <div class="card" id="zone">
               <!-- Device -->									
             <div class="card-body pb-0" rv-each-zone="zones">
               <div class="switch-holder">
@@ -323,11 +347,11 @@ body {
                   </div>
                 </div>
             </div>
-              <div class="separator-dashed"></div>
-              <!-- /Device -->
-						</div>
-					</div>
-				</div>
+            <div class="separator-dashed"></div>
+            <!-- /Device -->
+          </div>
+        </div>
+      </div>
 
   <!-- SVG -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">

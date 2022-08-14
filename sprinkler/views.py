@@ -116,3 +116,32 @@ def get_zones():
         for defined_zone in defined_zones:
             zones.append(control.get_relay_status(defined_zone['id']))
     return jsonify(zones)
+
+@api.route('switch/<switch_id>', methods = ['GET'])
+def get_switch(switch_id):
+    """ Gets/sets irrigation control switches (irrigation_enabled, paused) """
+    valid_switches = ['irrigation_enabled', 'paused']
+    if switch_id in valid_switches:
+        return jsonify(
+            {
+                'id': switch_id,
+                'value': control.switch(switch_id=switch_id)
+            }
+        )
+    return jsonify({'message': 'Invalid switch_id'}), 400
+
+@api.route('switch/<switch_id>', methods = ['PUT'])
+def put_switch(switch_id):
+    """ Gets/sets irrigation control switches (irrigation_enabled, paused) """
+    with current_app.app_context():
+        current_app.logger.info(request.data)
+        valid_switches = ['irrigation_enabled', 'paused']
+        if switch_id in valid_switches:
+            switch_value = json.loads(request.data)['value']
+            return jsonify(
+                {
+                    'id': switch_id,
+                    'value': control.switch(switch_id=switch_id, enabled=switch_value)
+                }
+            )
+        return jsonify({'message': 'Invalid switch_id'}), 400
