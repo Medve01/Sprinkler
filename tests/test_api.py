@@ -48,3 +48,7 @@ def test_zone_set_status(client, monkeypatch):
     res = client.get('/api/zone/lofasz/on')
     assert res.status_code == 404
 
+def test_zones(client, monkeypatch):
+    monkeypatch.setattr('sprinkler.control.get_relay_status', mock_get_relay_status)
+    res = client.get('/api/zone')
+    assert res.status_code == 200

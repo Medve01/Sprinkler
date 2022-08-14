@@ -65,3 +65,8 @@ def test_load_all_schedules(flask_app, monkeypatch):
     monkeypatch.setattr('sprinkler.extensions.scheduler.add_job', mock_scheduler_add_job)
     scheduler.load_all_schedules()
     assert MOCK_CALLED['function'] == 'scheduler_add_job'
+
+def test_get_all_schedules(flask_app, monkeypatch):
+    with flask_app.app_context():
+        schedules = scheduler.get_all_schedules()
+    assert schedules == []

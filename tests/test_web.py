@@ -73,11 +73,11 @@ def mock_get_all_schedules():
         },
     ]
 
-def test_default_page_with_schedules(client, monkeypatch):
+def test_schedules_page(client, monkeypatch):
     monkeypatch.setattr('sprinkler.scheduler.get_all_schedules', mock_get_all_schedules)
-    res = client.get('/')
+    res = client.get('/schedules')
     soup = BeautifulSoup(res.text, 'html.parser')
-    schedule_table = soup.find_all('table')[1]
+    schedule_table = soup.find_all('table')[0]
     tds = schedule_table.tbody.contents[1].find_all('td')
     assert tds[0].contents == ['*']
     assert tds[1].contents == ['10:0']
