@@ -116,3 +116,7 @@ def get_zones():
         for defined_zone in defined_zones:
             zones.append(control.get_relay_status(defined_zone['id']))
     return jsonify(zones)
+
+@api.route('enabled', methods = ['GET'])
+def get_enabled():
+    """ Gets if irrigation is enabled """

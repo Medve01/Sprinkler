@@ -302,7 +302,55 @@ body {
 				</div>
 			</div>
 		</div>
-					<div class="card" id="zone">
+    <!-- Irrigation main switch -->
+    <div class="card" id="main_switch">
+      <div class="card-body pb-0">
+        <div class="switch-holder">
+          <div class="switch-label">
+            <span>Irrigation enabled</span>
+          </div>
+          <div class="power-switch">
+            <input type="checkbox" checked />
+            <div class="button">
+              <svg class="power-off">
+                <use xlink:href="#line" class="line" />
+                <use xlink:href="#circle" class="circle" />
+              </svg>
+              <svg class="power-on">
+                <use xlink:href="#line" class="line" />
+                <use xlink:href="#circle" class="circle" />
+              </svg>
+            </div>
+          </div>
+      </div>
+      <div class="separator-dashed"></div>
+    </div>
+    <!-- /Irrigation main switch -->
+      <!-- Pause irrigation button -->
+    <div class="card" id="pause">
+    <div class="card-body pb-0">
+      <div class="switch-holder">
+        <div class="switch-label">
+          <span>Pause irrigation for today</span>
+        </div>
+        <div class="power-switch">
+          <input type="checkbox" />
+          <div class="button">
+            <svg class="power-off">
+              <use xlink:href="#line" class="line" />
+              <use xlink:href="#circle" class="circle" />
+            </svg>
+            <svg class="power-on">
+              <use xlink:href="#line" class="line" />
+              <use xlink:href="#circle" class="circle" />
+            </svg>
+          </div>
+        </div>
+    </div>
+    <div class="separator-dashed"></div>
+  </div>
+  <!-- /Pause irrigation button -->
+  <div class="card" id="zone">
               <!-- Device -->									
             <div class="card-body pb-0" rv-each-zone="zones">
               <div class="switch-holder">
@@ -323,11 +371,11 @@ body {
                   </div>
                 </div>
             </div>
-              <div class="separator-dashed"></div>
-              <!-- /Device -->
-						</div>
-					</div>
-				</div>
+            <div class="separator-dashed"></div>
+            <!-- /Device -->
+          </div>
+        </div>
+      </div>
 
   <!-- SVG -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
